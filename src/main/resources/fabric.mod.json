@@ -1,0 +1,25 @@
+{
+    "id": "advancedtooltips",
+    "name": "Advanced Tooltips",
+    "description": "Shows additional and more advanced tooltips, great for debugging!",
+    "license": "lgpl-3.0",
+    "links": {
+        "source": "https://github.com/BrockWS/AdvancedTooltips",
+        "issues": "https://github.com/BrockWS/AdvancedTooltips/issues"
+    },
+    "authors": [
+        {
+            "name": "BrockWS",
+            "website": "https://github.com/BrockWS"
+        }
+    ],
+    "version": "1.0.0",
+    "side": "client",
+    "initializers": [
+        "pw.brock.advancedtooltips.AdvancedTooltips"
+    ],
+    "requires": {
+        "fabric": "*",
+        "textilelib": "0.1.0"
+    }
+}
