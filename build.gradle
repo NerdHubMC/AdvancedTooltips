@@ -6,27 +6,28 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "advancedtooltips"
-version = "1.0.0"
+version = "1.0.1"
 
 minecraft {
 }
 
 repositories {
     maven {
-        name = "JitPack"
-        url = "https://jitpack.io"
+        name = "NerdHub"
+        url = "https://maven.abusedmaster.xyz/"
     }
+    mavenLocal()
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:19w02a"
-    mappings "net.fabricmc:yarn:19w02a.24"
-    modCompile "net.fabricmc:fabric-loader:0.3.2.96"
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings "net.fabricmc:yarn:${yarn_mappings}"
+    modCompile "net.fabricmc:fabric-loader:${loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modCompile "net.fabricmc:fabric:0.1.4.73"
+    modCompile "net.fabricmc:fabric:${fabric_version}"
 
-    modCompile "com.github.NerdHubMC:TextileLib:more-events-SNAPSHOT"
+    modCompile "com.github.NerdHubMC:TextileLib:${textile_version}"
 }
 
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task

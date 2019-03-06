@@ -2,10 +2,10 @@
     "id": "advancedtooltips",
     "name": "Advanced Tooltips",
     "description": "Shows additional and more advanced tooltips, great for debugging!",
-    "license": "lgpl-3.0",
+    "license": "MIT",
     "links": {
-        "source": "https://github.com/BrockWS/AdvancedTooltips",
-        "issues": "https://github.com/BrockWS/AdvancedTooltips/issues"
+        "source": "https://github.com/NerdHubMC/AdvancedTooltips",
+        "issues": "https://github.com/NerdHubMC/AdvancedTooltips/issues"
     },
     "authors": [
         {
@@ -13,13 +13,13 @@
             "website": "https://github.com/BrockWS"
         }
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "side": "client",
     "initializers": [
         "pw.brock.advancedtooltips.AdvancedTooltips"
     ],
     "requires": {
         "fabric": "*",
-        "textilelib": "0.1.0"
+        "textilelib": "1.0.0"
     }
 }

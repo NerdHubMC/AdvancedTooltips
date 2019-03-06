@@ -1,32 +1,10 @@
-/*
- * Copyright (C) 2019  BrockWS
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-package pw.brock.advancedtooltips;
-
-import nerdhub.textilelib.eventhandlers.EventRegistry;
-import nerdhub.textilelib.eventhandlers.EventSubscriber;
-import nerdhub.textilelib.events.render.TooltipBuildEvent;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.FabricLoader;
+package nerdhub.advancedtooltips;
 
 import java.util.List;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
 import net.minecraft.nbt.Tag;
 import net.minecraft.text.StringTextComponent;
@@ -35,6 +13,16 @@ import net.minecraft.text.TextFormat;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+
+import nerdhub.textilelib.event.client.TooltipCreationCallback;
+
+/**
+ * Advanced Tooltips
+ *
+ * @author BrockWS
+ */
 public class AdvancedTooltips implements ModInitializer {
 
     public static final String MOD_ID = "advancedtooltips";
@@ -42,20 +30,17 @@ public class AdvancedTooltips implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        System.out.println("G'day from Advanced Tooltips!");
-        EventRegistry.INSTANCE.registerEventHandler(this);
+        System.out.println("Initializing Advanced Tooltips!");
+        TooltipCreationCallback.EVENT.register(AdvancedTooltips::onTooltipEvent);
     }
 
-    @EventSubscriber
-    public static void onTooltipEvent(TooltipBuildEvent event) {
-        if (event.getStack().isEmpty())
+    private static void onTooltipEvent(ItemStack stack, TooltipContext context, List<TextComponent> tooltips) {
+        if (stack.isEmpty())
             return;
         boolean advanced = MinecraftClient.getInstance().options.advancedItemTooltips;
-        boolean shift = Gui.isShiftPressed(); // Show NBT as formatted, requires ctrl
-        boolean ctrl = Gui.isControlPressed(); // Show NBT
-        boolean alt = Gui.isAltPressed(); // Show Item Based debug information
-        List<TextComponent> tooltips = event.getList();
-        ItemStack stack = event.getStack();
+        boolean shift = Screen.isShiftPressed(); // Show NBT as formatted, requires ctrl
+        boolean ctrl = Screen.isControlPressed(); // Show NBT
+        boolean alt = Screen.isAltPressed(); // Show Item Based debug information
         Item item = stack.getItem();
         Identifier id = Registry.ITEM.getId(item);
         StringBuilder format = new StringBuilder();
@@ -114,21 +99,27 @@ public class AdvancedTooltips implements ModInitializer {
         if (id.getNamespace().equalsIgnoreCase("minecraft")) // Since Minecraft isn't a mod
             AdvancedTooltips.appendAndClear(format.append("Minecraft"), tooltips);
 
-        FabricLoader.INSTANCE.getModContainers()
+        FabricLoader.getInstance().getAllMods()
                 .stream()
                 .filter(mod ->
-                        mod.getInfo().getId().equalsIgnoreCase(id.getNamespace()))
+                        mod.getMetadata().getId().equalsIgnoreCase(id.getNamespace()))
                 .findAny()
                 .ifPresent(mod ->
-                        AdvancedTooltips.appendAndClear(format.append(mod.getInfo().getName()), tooltips)
+                        AdvancedTooltips.appendAndClear(format.append(mod.getMetadata().getName()), tooltips)
                 );
         if (advanced && ctrl && stack.hasTag()) {
             tooltips.removeIf(textComponent -> textComponent.getString().contains("NBT: "));
             AdvancedTooltips.appendColouredNBT(format, tooltips, stack.getTag(), shift);
+            if (!shift)
+                AdvancedTooltips.appendAndClear(format.append("Press Shift to format NBT"), tooltips);
+        }
+        if (advanced && !ctrl && stack.hasTag()) {
+            AdvancedTooltips.resetFormat(format, TextFormat.DARK_GRAY);
+            AdvancedTooltips.appendAndClear(format.append("Press Control for NBT"), tooltips);
         }
     }
 
-    public static void appendColouredNBT(StringBuilder builder, List<TextComponent> tooltips, Tag tag, boolean formatted) {
+    private static void appendColouredNBT(StringBuilder builder, List<TextComponent> tooltips, Tag tag, boolean formatted) {
         if (tag == null) {
             AdvancedTooltips.appendAndClear(builder.append("null"), tooltips);
             return;
