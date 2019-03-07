@@ -3,11 +3,11 @@
 Advanced Tooltips is a Fabric mod for Minecraft 1.14. 
 This mod adds extra information about the item to the items tooltip.
 
-Requires [TextileLib](https://github.com/NerdHubMC/TextileLib) v0.1.0
+Requires [TextileLib](https://github.com/NerdHubMC/TextileLib)
 
 ## Features
 
-- Appends the Mod Name of the item that registered the item
+- Appends the Mod Name of the item that registered the item  
 ![mod_name]
 
 ##### The following only works when Minecraft is set to show Advanced Tooltips (F3 + H)

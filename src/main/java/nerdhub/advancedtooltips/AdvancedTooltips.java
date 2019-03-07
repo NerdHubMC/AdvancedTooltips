@@ -16,7 +16,7 @@ import net.minecraft.util.registry.Registry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
-import nerdhub.textilelib.event.client.TooltipCreationCallback;
+import nerdhub.textilelib.event.client.render.tooltip.TooltipCreationCallback;
 
 /**
  * Advanced Tooltips

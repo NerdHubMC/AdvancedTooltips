@@ -16,7 +16,7 @@
     "version": "1.0.1",
     "side": "client",
     "initializers": [
-        "pw.brock.advancedtooltips.AdvancedTooltips"
+        "nerdhub.advancedtooltips.AdvancedTooltips"
     ],
     "requires": {
         "fabric": "*",
